@@ -1,5 +1,5 @@
 [package]
-name = "construction-work"
+name = "construction_work"
 version = "0.1.0"
 edition = "2021"
 
@@ -18,6 +18,7 @@ console_error_panic_hook = { version = "0.1", optional = true }
 tokio = { version = "1.47", features = ["rt-multi-thread"], optional = true }
 wasm-bindgen = { version = "0.2", optional = true }
 cookie = "0.18"
+convert_case = "0.8.0"
 
 [features]
 hydrate = [
@@ -103,3 +104,7 @@ lib-default-features = false
 #
 # Optional. Defaults to "release".
 lib-profile-release = "wasm-release"
+
+[package.metadata.leptos-i18n]
+default = "en"
+locales = ["en", "cs"]

@@ -1,29 +1,26 @@
+use crate::components::{Billboard, Button};
 use leptos::prelude::*;
 use leptos_meta::Title;
 
 #[server]
 async fn login(username: String) -> Result<(), ServerFnError> {
-    use axum::http::{HeaderName, HeaderValue};
-    use cookie::{Cookie, SameSite};
+    use axum::http::{header::SET_COOKIE, HeaderValue};
+    use cookie::{Cookie, SameSite::Lax};
     use leptos_axum::ResponseOptions;
-
-    // Get the ResponseOptions injected by leptos_axum
-    let response = expect_context::<ResponseOptions>();
 
     // Build cookie
     let cookie = Cookie::build(("user", username))
         .path("/")
         .http_only(true)
-        .same_site(SameSite::Lax)
+        .same_site(Lax)
         .build();
 
-    // Add Set-Cookie header
-    let header_name = HeaderName::from_static("set-cookie");
     let Ok(header_value) = HeaderValue::from_str(&cookie.to_string()) else {
         return Err(ServerFnError::new("Cookie Value Error"));
     };
 
-    response.insert_header(header_name, header_value);
+    // Get the ResponseOptions injected by leptos_axum
+    expect_context::<ResponseOptions>().append_header(SET_COOKIE, header_value);
 
     Ok(())
 }
@@ -68,7 +65,12 @@ pub fn HomePage() -> impl IntoView {
     view! {
         <Title text="Home Page"/>
 
-        <h1>{name}</h1>
+        <Billboard>
+            <h1>"Construction Work"</h1>
+            <p>"Discover Big Range of Components"</p>
+        </Billboard>
+
+        <h2>{name}</h2>
 
         <form on:submit=move |ev| {
             ev.prevent_default(); // stop page reload
@@ -81,7 +83,7 @@ pub fn HomePage() -> impl IntoView {
                 on:input=move |ev| set_username.set(event_target_value(&ev))
                 placeholder="Enter your name"
             />
-            <button type="submit">"Login"</button>
+            <Button {..} type="submit">"Login"</Button>
         </form>
 
         // Show when action is pending
