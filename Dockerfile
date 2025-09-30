@@ -1,5 +1,5 @@
 # Get started with a build env with Rust nightly
-FROM rust:alpine as builder
+FROM rustlang/rust:alpine as builder
 
 RUN apk update && \
     apk add --no-cache bash curl npm libc-dev binaryen
@@ -19,7 +19,7 @@ RUN npx @tailwindcss/cli -i ./style/input.css -o ./public/tailwind.css -m
 
 RUN cargo leptos build --release -vv
 
-FROM rust:alpine as runner
+FROM rustlang/rust:alpine as runner
 
 WORKDIR /app
 
