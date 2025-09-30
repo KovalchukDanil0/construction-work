@@ -1,2 +1,4 @@
-target
+.env
 .zed
+target
+public/tailwind.css

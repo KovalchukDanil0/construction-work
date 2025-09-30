@@ -18,7 +18,11 @@ console_error_panic_hook = { version = "0.1", optional = true }
 tokio = { version = "1.47", features = ["rt-multi-thread"], optional = true }
 wasm-bindgen = { version = "0.2", optional = true }
 cookie = "0.18"
-convert_case = "0.8.0"
+convert_case = "0.8"
+rust-i18n = "1.2"
+dotenv = "0.15"
+supabase_rs = { version = "0.4", optional = true }
+tower-http = { version = "0.6", features = ["compression-br"], optional = true }
 
 [features]
 hydrate = [
@@ -30,9 +34,11 @@ ssr = [
     "dep:axum",
     "dep:tokio",
     "dep:leptos_axum",
+    "dep:supabase_rs",
+    "dep:tower-http",
     "leptos/ssr",
     "leptos_meta/ssr",
-    "leptos_router/ssr",
+    "leptos_router/ssr"
 ]
 
 # Defines a size-optimized profile for the WASM bundle in release mode
@@ -55,7 +61,7 @@ site-root = "target/site"
 site-pkg-dir = "pkg"
 
 # [Optional] The source CSS file. If it ends with .sass or .scss then it will be compiled by dart-sass into CSS. The CSS is optimized by Lightning CSS before being written to <site-root>/<site-pkg>/app.css
-style-file = "style/main.scss"
+# style-file = "style/main.scss"
 # Assets source dir. All files found here will be copied and synchronized to site-root.
 # The assets-dir cannot have a sub directory with the same name/path as site-pkg-dir.
 #
