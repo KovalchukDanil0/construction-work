@@ -7,6 +7,25 @@
           "disabled": ["inactive-code"]
         }
       }
+    },
+    "tailwindcss-language-server": {
+      "settings": {
+        "includeLanguages": {
+          "rust": "html"
+        },
+        "experimental": {
+          "classRegex": [
+            "class=\"([^\"]*)",
+            "class={\"([^\"}]*)",
+            "class=format!({\"([^\"}]*)"
+          ]
+        }
+      }
+    }
+  },
+  "languages": {
+    "Rust": {
+      "language_servers": ["tailwindcss-language-server", "rust-analyzer"]
     }
   }
 }

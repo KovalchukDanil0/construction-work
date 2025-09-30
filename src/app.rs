@@ -1,5 +1,5 @@
 use crate::{
-    components::{Footer, Navigation},
+    components::{Footer, Navigation, Header},
     pages::{HomePage, NotFound},
 };
 use leptos::prelude::*;
@@ -48,7 +48,10 @@ pub fn App() -> impl IntoView {
 
         // content for this welcome page
         <Router>
-            <Navigation />
+            <div class="flex flex-row gap-3 justify-around items-center py-8 h-1/4">
+                <Header />
+                <Navigation />
+            </div>
 
             <main class="flex h-full flex-1 flex-col items-start justify-start gap-6">
                 <Routes fallback=||NotFound>

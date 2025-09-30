@@ -26,7 +26,7 @@ pub fn Navigation() -> impl IntoView {
     let location = use_location();
 
     view! {
-        <div class="flex flex-row gap-3 justify-around">
+        <div class="size-full">
             {
                 move || {
                     let pathname = location.pathname.get();
