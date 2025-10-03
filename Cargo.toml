@@ -23,6 +23,8 @@ rust-i18n = "1.2"
 dotenv = "0.15"
 supabase_rs = { version = "0.4", optional = true }
 tower-http = { version = "0.6", features = ["compression-br"], optional = true }
+leptos_icons = "0.7.0"
+icondata = "0.6.0"
 
 [features]
 hydrate = [

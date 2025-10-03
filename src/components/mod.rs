@@ -12,3 +12,6 @@ pub use billboard::Billboard;
 
 mod header;
 pub use header::Header;
+
+mod link;
+pub use link::Link;

@@ -48,10 +48,10 @@ pub fn App() -> impl IntoView {
 
         // content for this welcome page
         <Router>
-            <div class="flex flex-row gap-3 justify-around items-center py-8 h-1/4">
+            <header class="flex flex-col gap-3 justify-around items-center py-8 h-1/4">
                 <Header />
                 <Navigation />
-            </div>
+            </header>
 
             <main class="flex h-full flex-1 flex-col items-start justify-start gap-6">
                 <Routes fallback=||NotFound>
