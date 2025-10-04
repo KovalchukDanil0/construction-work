@@ -14,5 +14,4 @@ Cargo.lock
 *.pdb
 
 bun.lock
-public/tailwind.css
 .env

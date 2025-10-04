@@ -1,12 +1,12 @@
 use crate::{
-    components::{Footer, Navigation, Header},
-    pages::{HomePage, NotFound},
+    components::{Footer, Header, Navigation},
+    pages::{AboutPage, HomePage, NotFound},
 };
 use leptos::prelude::*;
 use leptos_meta::{provide_meta_context, MetaTags, Stylesheet, Title};
 use leptos_router::{
     components::{Route, Router, Routes},
-    path,
+    path, Lazy,
 };
 
 const THEME: &str = "dark";
@@ -41,7 +41,7 @@ pub fn App() -> impl IntoView {
     view! {
         // injects a stylesheet into the document <head>
         // id=leptos means cargo-leptos will hot-reload this stylesheet
-        <Stylesheet id="leptos" href="/tailwind.css"/>
+        <Stylesheet id="leptos" href="/pkg/construction-work.css"/>
 
         // sets the document title
         <Title text="Welcome to Leptos"/>
@@ -55,7 +55,8 @@ pub fn App() -> impl IntoView {
 
             <main class="flex h-full flex-1 flex-col items-start justify-start gap-6">
                 <Routes fallback=||NotFound>
-                    <Route path=path!("/") view=HomePage/>
+                    <Route path=path!("") view={Lazy::<HomePage>::new()}/>
+                    <Route path=path!("about") view={Lazy::<AboutPage>::new()}/>
                 </Routes>
             </main>
 

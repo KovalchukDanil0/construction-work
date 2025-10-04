@@ -1,5 +1,6 @@
 use leptos::prelude::*;
-use leptos_router::{components::A, hooks::use_location};
+use leptos_router::hooks::use_location;
+use crate::components::Link;
 
 const NAV_ENTRIES: [(&str, &str); 3] = [
     ("/", "Home"),
@@ -20,7 +21,7 @@ pub fn Navigation() -> impl IntoView {
                     NAV_ENTRIES.into_iter().filter_map(|(href, text)| {
                         if href != pathname {
                             Some(view! {
-                                <A href={href}>{text}</A>
+                                <Link href={href}>{text}</Link>
                             })
                         } else {
                             None

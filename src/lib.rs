@@ -7,8 +7,8 @@ mod pages;
 pub fn hydrate() {
     use app::App;
     use console_error_panic_hook::set_once;
-    use leptos::mount::hydrate_body;
+    use leptos::mount::hydrate_lazy;
 
     set_once();
-    hydrate_body(App);
+    hydrate_lazy(App);
 }

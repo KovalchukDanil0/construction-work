@@ -1,15 +1,22 @@
 use crate::components::{Billboard, Button};
 use leptos::prelude::*;
 use leptos_meta::Title;
+use leptos_router::{lazy_route, LazyRoute};
+use serde::{Serialize, Deserialize};
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+struct LoginData {
+    username: String,
+}
 
 #[server]
-async fn login(username: String) -> Result<(), ServerFnError> {
+async fn login(data: LoginData) -> Result<(), ServerFnError> {
     use axum::http::{header::SET_COOKIE, HeaderValue};
     use cookie::{Cookie, SameSite::Lax};
     use leptos_axum::ResponseOptions;
 
     // Build cookie
-    let cookie = Cookie::build(("user", username))
+    let cookie = Cookie::build(("user", data.username))
         .path("/")
         .http_only(true)
         .same_site(Lax)
@@ -53,44 +60,50 @@ async fn load() -> Result<String, ServerFnError> {
     Ok(user.value().to_string())
 }
 
-#[component]
-pub fn HomePage() -> impl IntoView {
-    let login_action = Action::new(|name: &String| login(name.clone()));
+pub struct HomePage {
+    name: OnceResource<Result<String, ServerFnError>>
+}
 
-    let name = Resource::new(|| {}, |_| load());
+#[lazy_route]
+impl LazyRoute for HomePage {
+    fn data() -> Self {
+        Self {
+            name: OnceResource::new(load())
+        }
+    }
 
-    // A simple input field for username
-    let (username, set_username) = signal(String::new());
+    fn view(this: Self) -> AnyView {
+        let HomePage { name } = this;
 
-    view! {
-        <Title text="Home Page"/>
+        let login = ServerAction::<Login>::new();
 
-        <Billboard>
-            <h1>"Construction Work"</h1>
-            <p>"Discover Big Range of Components"</p>
-        </Billboard>
+        view! {
+            <Title text="Home Page"/>
 
-        <h2>{name}</h2>
+            <Billboard>
+                <h1>"Construction Work"</h1>
+                <p>"Discover Big Range of Components"</p>
+            </Billboard>
 
-        <form on:submit=move |ev| {
-            ev.prevent_default(); // stop page reload
-            let name = username.get();
-            // Call the server function through the action
-            login_action.dispatch(name);
-        }>
-            <input
-                type="text"
-                on:input=move |ev| set_username.set(event_target_value(&ev))
-                placeholder="Enter your name"
-            />
-            <Button {..} type="submit">"Login"</Button>
-        </form>
+            <Transition>
+                <h2>{move || name.get()}</h2>
+            </Transition>
 
-        // Show when action is pending
-        {move || if login_action.pending().get() {
-            view! { <p>"Logging in…"</p> }
-        } else {
-            view! { <p>"Ready"</p> }
-        }}
+            <ActionForm action={login}>
+                <input
+                    type="text"
+                    name="data[username]"
+                    placeholder="Enter your name"
+                />
+                <Button {..} type="submit">"Login"</Button>
+            </ActionForm>
+
+            // Show when action is pending
+            {move || if login.pending().get() {
+                view! { <p>"Logging in…"</p> }
+            } else {
+                view! { <p>"Ready"</p> }
+            }}
+        }.into_any()
     }
 }

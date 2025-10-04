@@ -1,4 +1,5 @@
 use leptos::prelude::*;
+use leptos_router::components::A;
 
 #[component]
 pub fn Link(
@@ -6,6 +7,6 @@ pub fn Link(
     children: Children
 ) -> impl IntoView {
     view! {
-        <a href={href}>{children()}</a>
+        <A href={href}>{children()}</A>
     }
 }

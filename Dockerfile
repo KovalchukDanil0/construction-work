@@ -4,8 +4,6 @@ FROM rust:alpine as builder
 RUN apk update && \
     apk add --no-cache bash curl npm libc-dev binaryen libressl-dev pkgconfig
 
-RUN npm install -g sass
-
 RUN curl --proto '=https' --tlsv1.3 -LsSf https://github.com/leptos-rs/cargo-leptos/releases/latest/download/cargo-leptos-installer.sh | sh
 
 # Add the WASM target
@@ -14,10 +12,7 @@ RUN rustup target add wasm32-unknown-unknown
 WORKDIR /work
 COPY . .
 
-RUN npm install tailwindcss @tailwindcss/cli
-RUN npx @tailwindcss/cli -i ./style/input.css -o ./public/tailwind.css -m
-
-RUN cargo leptos build --release -vv
+RUN cargo leptos build --split --release -vv
 
 FROM rust:alpine as runner
 
