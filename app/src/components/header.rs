@@ -14,11 +14,13 @@ pub fn Header() -> impl IntoView {
 
     view! {
         <div class="w-full h-16 flex flex-row gap-3 justify-around items-center">
-            <img src="/steel-building.jpg" class="object-contain h-full" />
+            <Link href="/" class="contents">
+                <img src="/steel-building.jpg" class="object-contain h-full" />
+            </Link>
 
-            <ActionForm action={test_action} {..} class="relative">
+            <ActionForm action={test_action} attr:class="relative">
                 <input type="search" class="w-full" name="search" placeholder="Search here"/>
-                <Button {..} type="submit" class="absolute right-0 top-0">"Search"</Button>
+                <Button class="absolute right-0 top-0" {..} type="submit">"Search"</Button>
             </ActionForm>
 
             <Link href="/auth">

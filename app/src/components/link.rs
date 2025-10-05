@@ -3,10 +3,12 @@ use leptos_router::components::A;
 
 #[component]
 pub fn Link(
+    children: Children,
     href: &'static str,
-    children: Children
+    #[prop(optional)]
+    class: &'static str
 ) -> impl IntoView {
     view! {
-        <A href={href}>{children()}</A>
+        <A href={href} attr:class={class}>{children()}</A>
     }
 }

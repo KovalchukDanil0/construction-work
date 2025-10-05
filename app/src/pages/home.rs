@@ -4,22 +4,26 @@ use leptos_meta::Title;
 use leptos_router::{lazy_route, LazyRoute};
 use serde::{Serialize, Deserialize};
 
+pub struct HomePage {
+    name: OnceResource<Result<String, ServerFnError>>
+}
+
 #[derive(Serialize, Deserialize, Debug, Clone)]
-struct LoginData {
+pub struct LoginData {
     username: String,
 }
 
 #[server]
-async fn login(data: LoginData) -> Result<(), ServerFnError> {
+pub async fn login(data: LoginData) -> Result<(), ServerFnError> {
     use axum::http::{header::SET_COOKIE, HeaderValue};
-    use cookie::{Cookie, SameSite::Lax};
+    use cookie::{Cookie, SameSite};
     use leptos_axum::ResponseOptions;
 
     // Build cookie
     let cookie = Cookie::build(("user", data.username))
         .path("/")
         .http_only(true)
-        .same_site(Lax)
+        .same_site(SameSite::Lax)
         .build();
 
     let Ok(header_value) = HeaderValue::from_str(&cookie.to_string()) else {
@@ -33,7 +37,7 @@ async fn login(data: LoginData) -> Result<(), ServerFnError> {
 }
 
 #[server]
-async fn load() -> Result<String, ServerFnError> {
+pub async fn load() -> Result<String, ServerFnError> {
     use axum::http::HeaderMap;
     use cookie::Cookie;
     use leptos_axum::extract;
@@ -58,10 +62,6 @@ async fn load() -> Result<String, ServerFnError> {
     };
 
     Ok(user.value().to_string())
-}
-
-pub struct HomePage {
-    name: OnceResource<Result<String, ServerFnError>>
 }
 
 #[lazy_route]

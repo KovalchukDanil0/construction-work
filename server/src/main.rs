@@ -1,18 +1,15 @@
-#[deny(non_snake_case)]
+use axum::{serve, Router};
+use app::{shell, App};
+use dotenv::dotenv;
+use leptos::prelude::*;
+use leptos_axum::{file_and_error_handler, generate_route_list, LeptosRoutes};
+use tokio::net::TcpListener;
+use tower_http::{compression::CompressionLayer, CompressionLevel};
+use supabase_rs::SupabaseClient;
+use std::env::var;
 
-#[cfg(feature = "ssr")]
 #[tokio::main]
-async fn main() -> Result<(), leptos::prelude::ServerFnError> {
-    use axum::{serve, Router};
-    use construction_work::app::{shell, App};
-    use dotenv::dotenv;
-    use leptos::prelude::*;
-    use leptos_axum::{file_and_error_handler, generate_route_list, LeptosRoutes};
-    use tokio::net::TcpListener;
-    use tower_http::{compression::CompressionLayer, CompressionLevel};
-    use supabase_rs::SupabaseClient;
-    use std::env::var;
-
+async fn main() -> Result<(), ServerFnError> {
     dotenv().ok();
 
     let conf = get_configuration(None)?;
@@ -47,11 +44,4 @@ async fn main() -> Result<(), leptos::prelude::ServerFnError> {
     serve(listener, app.into_make_service()).await?;
 
     Ok(())
-}
-
-#[cfg(not(feature = "ssr"))]
-fn main() {
-    // no client-side main function
-    // unless we want this to work with e.g., Trunk for pure client-side testing
-    // see lib.rs for hydration function instead
 }

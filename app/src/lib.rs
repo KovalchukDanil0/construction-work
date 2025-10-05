@@ -1,13 +1,14 @@
-use crate::{
-    components::{Footer, Header, Navigation},
-    pages::{AboutPage, HomePage, NotFound},
-};
+mod components;
+mod pages;
+
 use leptos::prelude::*;
 use leptos_meta::{provide_meta_context, MetaTags, Stylesheet, Title};
 use leptos_router::{
     components::{Route, Router, Routes},
     path, Lazy,
 };
+use components::{Header, Navigation, Footer};
+use pages::{AboutPage, HomePage, NotFound};
 
 const THEME: &str = "dark";
 
