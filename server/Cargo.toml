@@ -7,6 +7,7 @@ edition.workspace = true
 
 [dependencies]
 app = { path = "../app", default-features = false, features = ["ssr"] }
+database.path = "../database"
 leptos = { workspace = true, features = ["ssr"] }
 leptos_axum.workspace = true
 
@@ -15,6 +16,5 @@ simple_logger.workspace = true
 tokio.workspace = true
 tower.workspace = true
 tower-http.workspace = true
-log.workspace = true
 supabase_rs.workspace = true
 dotenv.workspace = true

@@ -1,0 +1,8 @@
+[package]
+name = "database"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+supabase_rs.workspace = true
+leptos = { workspace = true, features = ["ssr"] }

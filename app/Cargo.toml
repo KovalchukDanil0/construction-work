@@ -6,12 +6,14 @@ edition.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+database = { path = "../database", optional = true }
 leptos.workspace = true
 leptos_meta.workspace = true
 leptos_router.workspace = true
 leptos_axum = { workspace = true, optional = true }
 cookie = { workspace = true, optional = true }
 axum = { workspace = true, optional = true }
+supabase_rs = { workspace = true, optional = true }
 
 http.workspace = true
 cfg-if.workspace = true
@@ -20,8 +22,11 @@ tw_merge.workspace = true
 icondata.workspace = true
 leptos_icons.workspace = true
 serde.workspace = true
+serde_json.workspace = true
+urlencoding.workspace = true
+log.workspace = true
 
 [features]
 default = []
 hydrate = ["leptos/hydrate"]
-ssr = ["leptos/ssr", "leptos_meta/ssr", "leptos_router/ssr", "dep:leptos_axum", "dep:cookie", "dep:axum"]
+ssr = ["leptos/ssr", "leptos_meta/ssr", "leptos_router/ssr", "dep:leptos_axum", "dep:cookie", "dep:axum", "dep:supabase_rs", "dep:database"]

@@ -1,11 +1,12 @@
 use app::App;
-use wasm_bindgen::prelude::*;
 use leptos::mount::hydrate_lazy;
+use log::Level;
+use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
 pub fn hydrate() {
     // initializes logging using the `log` crate
-    _ = console_log::init_with_level(log::Level::Debug);
+    _ = console_log::init_with_level(Level::Debug);
     console_error_panic_hook::set_once();
 
     hydrate_lazy(App);

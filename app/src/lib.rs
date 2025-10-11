@@ -1,13 +1,14 @@
 mod components;
 mod pages;
 
+use components::{Footer, Header, Navigation};
 use leptos::prelude::*;
-use leptos_meta::{provide_meta_context, MetaTags, Stylesheet, Title};
+use leptos_meta::{MetaTags, Stylesheet, Title, provide_meta_context};
 use leptos_router::{
+    Lazy,
     components::{Route, Router, Routes},
-    path, Lazy,
+    path,
 };
-use components::{Header, Navigation, Footer};
 use pages::{AboutPage, HomePage, NotFound};
 
 const THEME: &str = "dark";

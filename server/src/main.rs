@@ -1,16 +1,15 @@
-use axum::{serve, Router};
-use app::{shell, App};
+use app::{App, shell};
+use axum::{Router, serve};
+use database::database_init;
 use dotenv::dotenv;
 use leptos::prelude::*;
-use leptos_axum::{file_and_error_handler, generate_route_list, LeptosRoutes};
+use leptos_axum::{LeptosRoutes, file_and_error_handler, generate_route_list};
 use tokio::net::TcpListener;
-use tower_http::{compression::CompressionLayer, CompressionLevel};
-use supabase_rs::SupabaseClient;
-use std::env::var;
+use tower_http::{CompressionLevel, compression::CompressionLayer};
 
 #[tokio::main]
 async fn main() -> Result<(), ServerFnError> {
-    dotenv().ok();
+    dotenv()?;
 
     let conf = get_configuration(None)?;
 
@@ -24,10 +23,7 @@ async fn main() -> Result<(), ServerFnError> {
         .br(true)
         .quality(CompressionLevel::Fastest);
 
-    let supabase_client = SupabaseClient::new(
-        var("SUPABASE_URL")?,
-        var("SUPABASE_KEY")?,
-    )?;
+    database_init()?;
 
     let app = Router::new()
         .leptos_routes(&leptos_options, routes, {
@@ -36,7 +32,7 @@ async fn main() -> Result<(), ServerFnError> {
         })
         .layer(compression_layer)
         .fallback(file_and_error_handler(shell))
-        .with_state(leptos_options).with_state(supabase_client);
+        .with_state(leptos_options);
 
     // run our app with hyper
     // `axum::Server` is a re-export of `hyper::Server`
