@@ -1,5 +1,4 @@
-# Get started with a build env with Rust nightly
-FROM rust:alpine as builder
+FROM lukemathwalker/cargo-chef:latest-rust-alpine AS chef
 
 RUN apk update && \
     apk add --no-cache bash curl npm libc-dev binaryen libressl-dev pkgconfig
@@ -9,18 +8,26 @@ RUN curl --proto '=https' --tlsv1.3 -LsSf https://github.com/leptos-rs/cargo-lep
 # Add the WASM target
 RUN rustup target add wasm32-unknown-unknown
 
-WORKDIR /work
-COPY . .
-
-RUN cargo leptos build --split --release -vv
-
-FROM rust:alpine as runner
-
 WORKDIR /app
 
-COPY --from=builder /work/target/release/server /app/
-COPY --from=builder /work/target/site /app/site
-COPY --from=builder /work/Cargo.toml /app/
+FROM chef AS planner
+COPY . .
+RUN cargo chef prepare --recipe-path recipe.json
+
+FROM chef AS builder
+COPY --from=planner /app/recipe.json recipe.json
+# Build dependencies - this is the caching Docker layer!
+RUN cargo chef cook --release --recipe-path recipe.json
+# Build application
+COPY . .
+RUN cargo leptos build -P --split --release -vv
+
+FROM rust:alpine as runner
+WORKDIR /app
+
+COPY --from=builder /app/target/release/server /app/
+COPY --from=builder /app/target/site /app/site
+COPY --from=builder /app/Cargo.toml /app/
 
 ENV RUST_LOG="info"
 ENV LEPTOS_SITE_ADDR="0.0.0.0:8080"
