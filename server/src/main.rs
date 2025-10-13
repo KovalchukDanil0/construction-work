@@ -9,7 +9,8 @@ use tower_http::{CompressionLevel, compression::CompressionLayer};
 
 #[tokio::main]
 async fn main() -> Result<(), ServerFnError> {
-    dotenv()?;
+    // do not change to "?", causes serious issues
+    dotenv().ok();
 
     let conf = get_configuration(None)?;
 

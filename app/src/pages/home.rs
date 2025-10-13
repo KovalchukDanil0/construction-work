@@ -72,7 +72,7 @@ async fn load_username() -> Result<String, ServerFnError> {
         .filter_map(Result::ok)
         .find(|c| c.name() == "user")
     else {
-        return Err(ServerFnError::new(""));
+        return Err(ServerFnError::ServerError("".into()));
     };
 
     Ok(user.value().into())
@@ -125,12 +125,6 @@ impl LazyRoute for HomePage {
             username,
             billboards,
         } = this;
-
-        log::log!(
-            log::Level::Debug,
-            "{:?}",
-            billboards.get().unwrap().unwrap()
-        );
 
         let login = ServerAction::<Login>::new();
 

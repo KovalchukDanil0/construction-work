@@ -1,6 +1,5 @@
 use leptos::prelude::*;
-use std::env::var;
-use std::sync::OnceLock;
+use std::{env::var, sync::OnceLock};
 use supabase_rs::SupabaseClient;
 
 static DB: OnceLock<SupabaseClient> = OnceLock::new();
