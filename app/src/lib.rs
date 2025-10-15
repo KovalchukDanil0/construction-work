@@ -1,7 +1,7 @@
 mod components;
 mod pages;
 
-use components::{Footer, Header, Navigation};
+use components::{AdvantagesBanner, Footer, Header};
 use leptos::prelude::*;
 use leptos_meta::{MetaTags, Stylesheet, Title, provide_meta_context};
 use leptos_router::{
@@ -9,7 +9,7 @@ use leptos_router::{
     components::{Route, Router, Routes},
     path,
 };
-use pages::{AboutPage, HomePage, NotFound};
+use pages::{ContactUsPage, HomePage, NotFound};
 
 const THEME: &str = "dark";
 
@@ -50,15 +50,14 @@ pub fn App() -> impl IntoView {
 
         // content for this welcome page
         <Router>
-            <header class="flex flex-col gap-3 justify-around items-center py-8 h-1/4">
-                <Header />
-                <Navigation />
-            </header>
+            <Header />
+
+            <AdvantagesBanner />
 
             <main class="flex h-full flex-1 flex-col items-start justify-start gap-6">
                 <Routes fallback=||NotFound>
                     <Route path=path!("") view={Lazy::<HomePage>::new()}/>
-                    <Route path=path!("about") view={Lazy::<AboutPage>::new()}/>
+                    <Route path=path!("contact-us") view={Lazy::<ContactUsPage>::new()}/>
                 </Routes>
             </main>
 

@@ -28,7 +28,6 @@ struct BillboardWithImage {
     id: Number,
     title: String,
     description: String,
-    img_id: Number,
     img_src: String,
     img_alt: String,
 }
@@ -102,7 +101,6 @@ async fn load_billboards() -> Result<Vec<BillboardWithImage>, ServerFnError> {
             id: bb.id,
             title: bb.title,
             description: bb.description,
-            img_id: bb.img_id,
             img_src,
             img_alt,
         });
@@ -133,22 +131,28 @@ impl LazyRoute for HomePage {
 
             <Billboard src="/metal-construction.jpeg" alt="Construction Work" title="Construction Work" description="Discover Big Range of Components" />
 
-            <Transition>
-                <div class="flex flex-col gap-3 items-center justify-center">
-                    <For each={move || billboards.get().unwrap_or(Ok(Vec::new())).unwrap_or_default()} key={|state| state.id.clone()} let(BillboardWithImage { id, img_id, title, description, img_src, img_alt })>
+
+            <div class="flex flex-col gap-3 items-center justify-center">
+                <Transition>
+                    <For
+                        each={move || billboards.get().unwrap_or(Ok(Vec::new())).unwrap_or_default()}
+                        key={|state| state.id.clone()}
+                        let(BillboardWithImage { id: _, title, description, img_src, img_alt })
+                    >
                         <Billboard src={img_src} alt={img_alt} title={title} description={description} />
                     </For>
-                </div>
-            </Transition>
+                </Transition>
+            </div>
+
 
             <Transition>
                 <h2>
-                    {move || if let Some(login) = login.value().get() {
+                    {move || if let Some(Ok(login)) = login.value().get() {
                         login
-                    } else if let Some(username) = username.get() {
+                    } else if let Some(Ok(username)) = username.get() {
                         username
                     } else {
-                        Ok("Guest".into())
+                        "Guest".into()
                     }}
                 </h2>
             </Transition>
@@ -162,12 +166,14 @@ impl LazyRoute for HomePage {
                 <Button {..} type="submit">"Login"</Button>
             </ActionForm>
 
-            // Show when action is pending
-            {move || if login.pending().get() {
-                view! { <p>"Logging in…"</p> }
-            } else {
-                view! { <p>"Ready"</p> }
-            }}
+            <p>
+                // Show when action is pending
+                {move || if login.pending().get() {
+                    "Logging in…"
+                } else {
+                    "Ready"
+                }}
+            </p>
         }
         .into_any()
     }
