@@ -15,7 +15,9 @@ pub fn Input(
     #[prop(optional, into)] name: Option<String>,
     #[prop(optional)] direction: Directions,
     #[prop(optional, into)] label: Option<String>,
+    #[prop(optional, into)] placeholder: Option<String>,
     #[prop(optional, into)] class: Option<String>,
+    #[prop(optional, into)] bind_value: RwSignal<String>,
 ) -> AnyView {
     let direction = match direction {
         Directions::Col => "flex-col",
@@ -25,7 +27,7 @@ pub fn Input(
     };
 
     let input = view! {
-        <input name={name} class="border border-white" size="30" />
+        <input name={name} placeholder={placeholder} bind:value={bind_value} class="border border-white" size="30" />
     };
 
     if let Some(label) = label {

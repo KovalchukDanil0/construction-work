@@ -1,5 +1,5 @@
 mod components;
-mod pages;
+mod routes;
 
 use components::{AdvantagesBanner, Footer, Header};
 use leptos::prelude::*;
@@ -9,7 +9,7 @@ use leptos_router::{
     components::{Route, Router, Routes},
     path,
 };
-use pages::{ContactUsPage, HomePage, NotFound};
+use routes::{ContactUsPage, HomePage, NotFound, SearchPage, AuthPage, CartPage, AboutPage};
 
 const THEME: &str = "dark";
 
@@ -58,6 +58,10 @@ pub fn App() -> impl IntoView {
                 <Routes fallback=||NotFound>
                     <Route path=path!("") view={Lazy::<HomePage>::new()}/>
                     <Route path=path!("contact-us") view={Lazy::<ContactUsPage>::new()}/>
+                    <Route path=path!("search") view={Lazy::<SearchPage>::new()}/>
+                    <Route path=path!("auth") view={Lazy::<AuthPage>::new()}/>
+                    <Route path=path!("cart") view={Lazy::<CartPage>::new()}/>
+                    <Route path=path!("about") view={Lazy::<AboutPage>::new()}/>
                 </Routes>
             </main>
 

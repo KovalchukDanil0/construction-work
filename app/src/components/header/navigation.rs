@@ -1,7 +1,7 @@
 use crate::components::Link;
 use leptos::prelude::*;
 
-const NAV_ENTRIES: [(&str, &str); 3] = [("/", "Home"), ("/about", "About"), ("/test", "Test")];
+const NAV_ENTRIES: [(&str, &str); 3] = [("/", "Home"), ("/about", "About"), ("/contact-us", "Contact Us")];
 
 #[component]
 pub fn Navigation() -> impl IntoView {
