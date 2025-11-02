@@ -22,7 +22,7 @@ pub fn Search() -> impl IntoView {
 
     let hide_popover = move |_| {
         if let Some(popover_ref) = popover_ref.get() {
-            _ = popover_ref.hide_popover();
+            popover_ref.hide_popover().ok();
         }
     };
 

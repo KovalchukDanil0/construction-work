@@ -22,7 +22,7 @@ async fn main() -> Result<(), ServerFnError> {
 
     let compression_layer = CompressionLayer::new()
         .br(true)
-        .quality(CompressionLevel::Fastest);
+        .quality(CompressionLevel::Best);
 
     database_init()?;
 

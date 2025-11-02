@@ -31,7 +31,7 @@ log = "0.4"
 tokio = "1.48"
 tower = "0.5"
 tower-http = { version = "0.6", features = ["compression-br"] }
-wasm-bindgen = "=0.2.103"
+wasm-bindgen = "0.2"
 supabase_rs = "0.4"
 dotenv = "0.15"
 serde = "1.0"
