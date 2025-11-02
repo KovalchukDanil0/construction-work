@@ -7,6 +7,11 @@
         @apply text-black dark:text-white;
     }
 
+    html,
+    body {
+        @apply min-h-screen;
+    }
+
     select,
     option,
     [popover] {

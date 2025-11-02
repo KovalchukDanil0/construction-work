@@ -1,15 +1,15 @@
-mod home;
-mod not_found;
-mod contact_us;
-mod search;
+mod about;
 mod auth;
 mod cart;
-mod about;
+mod contact_us;
+mod home;
+mod not_found;
+mod search;
 
-pub use auth::AuthPage;
-pub use search::SearchPage;
-pub use contact_us::ContactUsPage;
-pub use not_found::NotFound;
-pub use home::HomePage;
-pub use cart::CartPage;
 pub use about::AboutPage;
+pub use auth::AuthPage;
+pub use cart::CartPage;
+pub use contact_us::ContactUsPage;
+pub use home::HomePage;
+pub use not_found::NotFound;
+pub use search::SearchPage;

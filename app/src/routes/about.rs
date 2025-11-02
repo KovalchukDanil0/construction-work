@@ -1,5 +1,5 @@
 use leptos::prelude::*;
-use leptos_router::{lazy_route, LazyRoute};
+use leptos_router::{LazyRoute, lazy_route};
 
 pub struct AboutPage;
 
@@ -10,8 +10,6 @@ impl LazyRoute for AboutPage {
     }
 
     fn view(this: Self) -> AnyView {
-        view! {
-            <h1>"About"</h1>
-        }.into_any()
+        view! { <h1>"About"</h1> }.into_any()
     }
 }

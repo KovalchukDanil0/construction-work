@@ -1,44 +1,45 @@
 use leptos::prelude::*;
-use tw_merge::tw_merge;
+use tailwind_fuse::{AsTailwindClass, TwVariant, tw_merge};
 
-#[derive(Default)]
-pub enum Directions {
-    #[default]
+#[derive(TwVariant)]
+pub enum Variant {
+    #[tw(default, class = "flex-col")]
     Col,
+    #[tw(class = "flex-col-reverse")]
     ColRev,
+    #[tw(class = "flex-row")]
     Row,
+    #[tw(class = "flex-row-reverse")]
     RowRev,
 }
 
 #[component]
 pub fn Input(
+    #[prop(default = Variant::Col)] variant: Variant,
     #[prop(optional, into)] name: Option<String>,
-    #[prop(optional)] direction: Directions,
     #[prop(optional, into)] label: Option<String>,
     #[prop(optional, into)] placeholder: Option<String>,
+    #[prop(optional, into)] r#type: Option<String>,
+    #[prop(optional, into)] pattern: Option<String>,
     #[prop(optional, into)] class: Option<String>,
     #[prop(optional, into)] bind_value: RwSignal<String>,
-) -> AnyView {
-    let direction = match direction {
-        Directions::Col => "flex-col",
-        Directions::ColRev => "flex-col-reverse",
-        Directions::Row => "flex-row",
-        Directions::RowRev => "flex-row-reverse",
-    };
-
-    let input = view! {
-        <input name={name} placeholder={placeholder} bind:value={bind_value} class="border border-white" size="30" />
-    };
-
-    if let Some(label) = label {
-        view! {
-            <label class={tw_merge!("flex", direction, class)}>
-                {label}
-                {input}
-            </label>
-        }
-        .into_any()
-    } else {
-        input.into_any()
+    #[prop(optional)] required: Option<bool>,
+) -> impl IntoView {
+    view! {
+        <label class={tw_merge!(
+            "flex", variant.as_class(), class
+        )}>
+            {label}
+            <input
+                name={name}
+                placeholder={placeholder}
+                required={required}
+                type={r#type}
+                pattern={pattern}
+                bind:value={bind_value}
+                class="border border-white"
+                size="30"
+            />
+        </label>
     }
 }

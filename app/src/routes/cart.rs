@@ -1,5 +1,5 @@
 use leptos::prelude::*;
-use leptos_router::{lazy_route, LazyRoute};
+use leptos_router::{LazyRoute, lazy_route};
 
 pub struct CartPage;
 
@@ -10,8 +10,6 @@ impl LazyRoute for CartPage {
     }
 
     fn view(this: Self) -> AnyView {
-        view! {
-            <h1>"Cart"</h1>
-        }.into_any()
+        view! { <h1>"Cart"</h1> }.into_any()
     }
 }

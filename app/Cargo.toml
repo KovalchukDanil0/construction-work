@@ -14,18 +14,18 @@ leptos_axum = { workspace = true, optional = true }
 cookie = { workspace = true, optional = true }
 axum = { workspace = true, optional = true }
 supabase_rs = { workspace = true, optional = true }
+urlencoding = { workspace = true, optional = true }
 
-tw_merge.workspace = true
 icondata.workspace = true
 leptos_icons.workspace = true
 serde.workspace = true
 serde_json.workspace = true
-urlencoding.workspace = true
 log.workspace = true
 convert_case.workspace = true
-web-sys.workspace = true
+js-sys.workspace = true
+tailwind_fuse.workspace = true
 
 [features]
 default = []
 hydrate = ["leptos/hydrate"]
-ssr = ["leptos/ssr", "leptos_meta/ssr", "leptos_router/ssr", "dep:leptos_axum", "dep:cookie", "dep:axum", "dep:supabase_rs", "dep:database"]
+ssr = ["leptos/ssr", "leptos_meta/ssr", "leptos_router/ssr", "dep:leptos_axum", "dep:cookie", "dep:axum", "dep:supabase_rs", "dep:database", "dep:urlencoding"]

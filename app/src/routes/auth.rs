@@ -1,20 +1,12 @@
-use leptos::prelude::*;
-use leptos_router::{lazy_route, LazyRoute};
-use serde::{Deserialize, Serialize};
 use crate::components::Button;
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-struct LoginData {
-    username: String,
-}
+use leptos::prelude::*;
+use leptos_router::{LazyRoute, lazy_route};
 
 #[server]
-async fn login(data: LoginData) -> Result<String, ServerFnError> {
+async fn login(username: String) -> Result<String, ServerFnError> {
     use axum::http::{HeaderValue, header::SET_COOKIE};
     use cookie::{Cookie, SameSite};
     use leptos_axum::ResponseOptions;
-
-    let LoginData { username } = data;
 
     // Build cookie
     let cookie = Cookie::build(("user", username.clone()))
@@ -55,7 +47,7 @@ async fn load_username() -> Result<String, ServerFnError> {
 
 pub struct AuthPage {
     username: OnceResource<Result<String, ServerFnError>>,
-    login_action: ServerAction<Login>
+    login_action: ServerAction<Login>,
 }
 
 #[lazy_route]
@@ -63,14 +55,14 @@ impl LazyRoute for AuthPage {
     fn data() -> Self {
         Self {
             username: OnceResource::new(load_username()),
-            login_action: ServerAction::<Login>::new()
+            login_action: ServerAction::<Login>::new(),
         }
     }
 
     fn view(this: Self) -> AnyView {
         let AuthPage {
             username,
-            login_action
+            login_action,
         } = this;
 
         view! {
@@ -78,33 +70,30 @@ impl LazyRoute for AuthPage {
 
             <Transition>
                 <h2>
-                    {move || if let Some(Ok(username)) = login_action.value().get() {
-                        username
-                    } else if let Some(Ok(username)) = username.get() {
-                        username
-                    } else {
-                        "Guest".into()
+                    {move || {
+                        if let Some(Ok(username)) = login_action.value().get() {
+                            username
+                        } else if let Some(Ok(username)) = username.get() {
+                            username
+                        } else {
+                            "Guest".into()
+                        }
                     }}
                 </h2>
             </Transition>
 
             <ActionForm action={login_action}>
-                <input
-                    type="text"
-                    name="data[username]"
-                    placeholder="Enter your name"
-                />
-                <Button {..} type="submit">"Login"</Button>
+                <input type="text" name="username" placeholder="Enter your name" />
+                <Button {..} type="submit">
+                    "Login"
+                </Button>
             </ActionForm>
 
             <p>
                 // Show when action is pending
-                {move || if login_action.pending().get() {
-                    "Logging in…"
-                } else {
-                    "Ready"
-                }}
+                {move || if login_action.pending().get() { "Logging in…" } else { "Ready" }}
             </p>
-        }.into_any()
+        }
+        .into_any()
     }
 }

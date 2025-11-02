@@ -1,5 +1,5 @@
 use leptos::prelude::*;
-use leptos_router::{hooks::query_signal, lazy_route, LazyRoute};
+use leptos_router::{LazyRoute, hooks::query_signal, lazy_route};
 
 pub struct SearchPage;
 
@@ -16,6 +16,7 @@ impl LazyRoute for SearchPage {
             <h1>"Search"</h1>
 
             <p>{query.get()}</p>
-        }.into_any()
+        }
+        .into_any()
     }
 }
