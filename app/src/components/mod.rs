@@ -1,7 +1,7 @@
 mod advantages_banner;
 mod billboard;
 mod button;
-mod card;
+pub mod card;
 mod footer;
 mod header;
 mod image;
@@ -13,7 +13,6 @@ pub use advantages_banner::AdvantagesBanner;
 pub use billboard::Billboard;
 pub use button::Button;
 pub use button::Variant as ButtonVariant;
-pub use card::Card;
 pub use footer::Footer;
 pub use header::Header;
 pub use image::Image;

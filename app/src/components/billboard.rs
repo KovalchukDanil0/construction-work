@@ -6,7 +6,9 @@ pub fn Billboard(
     #[prop(into)] alt: String,
     #[prop(into)] src: String,
     #[prop(into)] title: String,
-    #[prop(optional)] button: Option<(&'static str, &'static str)>,
+    /// (href, text)
+    #[prop(optional)]
+    button: Option<(&'static str, &'static str)>,
     #[prop(optional, into)] description: Option<String>,
 ) -> impl IntoView {
     view! {

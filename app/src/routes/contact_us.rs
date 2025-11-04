@@ -1,10 +1,10 @@
-use crate::components::{Button, Input, Link};
+use crate::components::{Button, Input, Link, LinkVariant};
 use convert_case::{Case, Casing};
 use leptos::prelude::*;
 use leptos_router::{LazyRoute, lazy_route};
 
 #[server]
-async fn contact_us(
+async fn contact_us_action(
     name: String,
     phone: String,
     email: String,
@@ -16,13 +16,15 @@ async fn contact_us(
     subject: String,
     question: String,
 ) -> Result<(), ServerFnError> {
-    println!("{}", postal);
+    println!(
+        "{name} {phone} {email} {company} {postal} {place} {street} {house} {subject} {question}"
+    );
 
     Ok(())
 }
 
 #[component]
-fn Form(action: ServerAction<ContactUs>) -> impl IntoView {
+fn Form(action: ServerAction<ContactUsAction>) -> impl IntoView {
     view! {
         <ActionForm action {..} class="flex flex-col gap-3 justify-center items-center">
             <div class="grid grid-cols-2 gap-4">
@@ -53,7 +55,7 @@ fn Form(action: ServerAction<ContactUs>) -> impl IntoView {
 }
 
 pub struct ContactUsPage {
-    action: ServerAction<ContactUs>,
+    action: ServerAction<ContactUsAction>,
     email: &'static str,
     phone: &'static str,
 }
@@ -62,7 +64,7 @@ pub struct ContactUsPage {
 impl LazyRoute for ContactUsPage {
     fn data() -> Self {
         Self {
-            action: ServerAction::<ContactUs>::new(),
+            action: ServerAction::<ContactUsAction>::new(),
             email: "keretski94@gmail.com",
             phone: "+420 776 412 521",
         }
@@ -88,11 +90,15 @@ impl LazyRoute for ContactUsPage {
                 <div class="flex flex-col gap-3 justify-start items-center">
                     <h2>"Construction Work"</h2>
 
-                    <Link href={format!("mailto:{}", email)}>{email}</Link>
-                    <Link href={format!(
-                        "tel:{}",
-                        phone.to_case(Case::Flat),
-                    )}>"+420 776 412 521"</Link>
+                    <Link href={format!("mailto:{}", email)} variant={LinkVariant::Blue}>
+                        {email}
+                    </Link>
+                    <Link
+                        href={format!("tel:{}", phone.to_case(Case::Flat))}
+                        variant={LinkVariant::Blue}
+                    >
+                        "+420 776 412 521"
+                    </Link>
                 </div>
             </div>
         }.into_any()

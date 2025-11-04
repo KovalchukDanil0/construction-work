@@ -3,7 +3,7 @@ use leptos::prelude::*;
 use leptos_icons::Icon;
 
 #[component]
-fn IconContainer(#[prop(into)] text: String, #[prop(into)] icon: Icon) -> impl IntoView {
+fn IconContainer(#[prop(into)] text: String, icon: Icon) -> impl IntoView {
     view! {
         <div class="flex flex-row gap-3 justify-center items-center">
             <Icon icon />

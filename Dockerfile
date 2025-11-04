@@ -1,13 +1,9 @@
 FROM rust:alpine AS chef
 
 RUN apk update && \
-    apk add --no-cache bash curl npm libc-dev binaryen libressl-dev pkgconfig
+    apk add --no-cache bash curl npm libc-dev binaryen libressl-dev pkgconfig perl make
 
-RUN curl --proto '=https' --tlsv1.3 -LsSf https://github.com/leptos-rs/cargo-leptos/releases/latest/download/cargo-leptos-installer.sh | sh
-RUN cargo install --locked cargo-chef
-
-# Add the WASM target
-RUN rustup target add wasm32-unknown-unknown
+RUN cargo install cargo-chef cargo-leptos
 
 WORKDIR /build
 

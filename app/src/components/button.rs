@@ -13,9 +13,9 @@ pub enum Variant {
 
 #[component]
 pub fn Button(
+    children: Children,
     #[prop(optional, into)] class: Option<String>,
     #[prop(default = Variant::Default)] variant: Variant,
-    children: Children,
 ) -> impl IntoView {
     view! {
         <button class={tw_merge!(

@@ -8,17 +8,15 @@ async fn login(username: String) -> Result<String, ServerFnError> {
     use cookie::{Cookie, SameSite};
     use leptos_axum::ResponseOptions;
 
-    // Build cookie
+    let response = expect_context::<ResponseOptions>();
+
     let cookie = Cookie::build(("user", username.clone()))
         .path("/")
         .http_only(true)
         .same_site(SameSite::Lax)
         .build();
 
-    let header_value = HeaderValue::from_str(&cookie.to_string())?;
-
-    // Get the ResponseOptions injected by leptos_axum
-    expect_context::<ResponseOptions>().append_header(SET_COOKIE, header_value);
+    response.append_header(SET_COOKIE, HeaderValue::from_str(&cookie.to_string())?);
 
     Ok(username)
 }
@@ -37,7 +35,7 @@ async fn load_username() -> Result<String, ServerFnError> {
 
     let Some(user) = Cookie::split_parse(cookie_header.to_str()?)
         .filter_map(Result::ok)
-        .find(|c| c.name() == "user")
+        .find(|cookie| cookie.name() == "user")
     else {
         return Err(ServerFnError::new("Error parsing cookie"));
     };

@@ -1,13 +1,15 @@
-use crate::components::Link;
+use crate::components::{Link, LinkVariant};
 use leptos::prelude::*;
 use tailwind_fuse::tw_merge;
 
 #[component]
-pub fn Card(
+pub fn CardBanner(
     #[prop(into)] img: String,
     #[prop(into)] alt: String,
     #[prop(into)] title: String,
-    #[prop(optional)] button: Option<(&'static str, &'static str)>,
+    /// (href, text)
+    #[prop(optional)]
+    button: Option<(&'static str, &'static str)>,
     #[prop(optional, into)] description: Option<String>,
     #[prop(optional, into)] class: Option<String>,
 ) -> impl IntoView {
@@ -20,7 +22,9 @@ pub fn Card(
                     <p>{description}</p>
                 </ShowLet>
                 <ShowLet some={move || button.clone()} let((href, text))>
-                    <Link href>{text}</Link>
+                    <Link variant={LinkVariant::Blue} href>
+                        {text}
+                    </Link>
                 </ShowLet>
             </div>
         </div>

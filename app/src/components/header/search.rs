@@ -8,10 +8,10 @@ pub async fn search_action(query: String) -> Result<(), ServerFnError> {
     use leptos_axum::redirect;
     use urlencoding::encode;
 
-    let encoded_query = encode(query.as_str());
+    let encoded_query = encode(&query);
 
     let page = format!("/search?q={}", encoded_query);
-    redirect(page.as_str());
+    redirect(&page);
     Ok(())
 }
 

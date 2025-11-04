@@ -5,7 +5,10 @@ use dotenv::dotenv;
 use leptos::prelude::*;
 use leptos_axum::{LeptosRoutes, file_and_error_handler, generate_route_list};
 use tokio::net::TcpListener;
-use tower_http::{CompressionLevel, compression::CompressionLayer};
+use tower_http::compression::{
+    CompressionLayer,
+    predicate::{DefaultPredicate, NotForContentType, Predicate},
+};
 
 #[tokio::main]
 async fn main() -> Result<(), ServerFnError> {
@@ -20,9 +23,16 @@ async fn main() -> Result<(), ServerFnError> {
     // Generate the list of routes in your Leptos App
     let routes = generate_route_list(App);
 
+    let predicate = DefaultPredicate::new()
+        // don't compress responses who's `content-type` starts with `application/json`
+        .and(NotForContentType::new("application/json"));
+
     let compression_layer = CompressionLayer::new()
+        .deflate(true)
         .br(true)
-        .quality(CompressionLevel::Best);
+        .gzip(true)
+        .zstd(true)
+        .compress_when(predicate);
 
     database_init()?;
 

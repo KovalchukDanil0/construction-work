@@ -54,7 +54,7 @@ pub fn App() -> impl IntoView {
 
             <AdvantagesBanner />
 
-            <main class="flex flex-col flex-1 gap-6 justify-start items-start h-full">
+            <main class="flex flex-col flex-1 gap-10 justify-start items-start h-full">
                 <Routes fallback={|| NotFound}>
                     <Route path={path!("")} view={Lazy::<HomePage>::new()} />
                     <Route path={path!("contact-us")} view={Lazy::<ContactUsPage>::new()} />
